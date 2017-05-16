@@ -1,0 +1,123 @@
+#define _CRT_SECURE_NO_DEPRECATE
+#include<iostream>  
+#include<string>  
+#include<stack>  
+using namespace std;
+
+int main()
+{
+	char a[1000]; //原始输入被减数	
+	char b[1000]; //原始输入减数数组
+	char c[1000];//对b调整后的处理数组
+	char s[1000];//最终结果数组
+	int i = 0;
+	int j = 0;
+	cout << "请输入被减数：";
+	gets(a);
+	cout << "请输入减数";
+	gets(b);
+	int lena;
+	int lenb;
+	int lenc;
+	int lens;
+	int flag = 0;      //判断借位信息 0为本位没有借位
+	lena = strlen(a);  //被减数有效长度
+	lenb = strlen(b);  //减数有效长度
+	//printf("%d %d\n", lena,lenb);
+	//system("pause");
+
+	//**********************处理减数,结果存入c[1000]中****************************
+	for (i = 0; i < lena - lenb;i++)
+	{
+		c[i] = '0';
+	}
+	for (j= lena - lenb,i=0; j < lena; j++)//容易出问题
+	{
+		c[j] = b[i];
+		i++;
+	}
+
+	c[j] = '\0';
+	lenc = strlen(c);
+	//printf("%d ", lenc);
+
+for (i = 0; i < lenc; i++)
+	{
+		printf("%c ",c[i]);
+	}
+//*************************************************************	
+	
+
+
+//***********************减法运算******************************
+for (i = lena - 1,j=0; i >= 0; i--)
+{
+	if (a[i] < c[i])     //被减数小于减数
+	{
+		if (flag == 1)  //被减数小于减数，本位有借位
+		{
+			if ((a[i])=='1')
+			{
+				s[j] =0;
+				j++;
+				flag = 1;
+			}
+			if ((a[i])!='1')
+			{
+				s[j] = a[i] + 57 - c[i] ;
+				j++;
+				flag = 1;
+			}
+		}
+		if (flag == 0) //被减数小于减数，本位没有借位
+		{
+			s[j] = a[i] + '9' + '1' - c[i] - 48;
+			j++;
+			flag = 1;
+		}
+	}
+	if (a[i] > c[i])  //被减数大于减数
+		{
+			if (flag == 1) //被减数大于减数，本位有借位
+			{
+				s[j] = a[i] - '1' - c[i] ;
+				j++;
+				flag = 0;
+			}
+			if (flag == 0) //被减数大于减数，本位没有借位
+			{
+				s[j] = a[i] - c[i] ;
+				j++;
+				flag = 0;
+			}
+		}
+
+
+	if (a[i] == c[i])   //被减数和减数相等
+	{
+		if (flag == 1) //被减数和减数相等,本位发生借位
+		{
+			s[j] = '9';
+			j++;
+			flag = 1;
+		}
+		if (flag == 0)//被减数和减数相等，本位没有借位
+		{
+			s[j] = '0';
+			j++;
+			flag = 0;
+		}
+	}
+}
+s[j] = '\0';
+lens = strlen(s);
+
+printf("%d--- ", lens);
+for (i = 0; i < lens; i++)
+{
+	printf("%c ",s[i]);
+}
+
+system("pause");
+
+}
